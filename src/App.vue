@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <LineChart :chartData="lineChart1" />
-    <!-- <PieChart :pieData="pieData1" /> -->
+    <PieChart :pieData="pieData1" />
     <LineChart :chartData="lineChart2" />
   </div>
 </template>

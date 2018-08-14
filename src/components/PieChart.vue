@@ -5,6 +5,7 @@
 <script>
 
 import Chart from "../drawing/Chart";
+import Legend from "../drawing/Legend";
 import Arc from "../shapes/Arc";
 import ArcText from "../text/ArcText";
 
@@ -13,70 +14,56 @@ export default {
   props: {
     pieData: Object
   },
+  data: function() {
+    return {
+      model: {
+        data: "",
+        container: "",
+        margin: { 
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+        },
+        key: ""
+      }
+    }
+  },
   computed: {
       computedClass: function() {
             let className = `c-chart__${this.pieData.containerName}`;
 
             return className;
-      },
-      createChartModel: function() {
-        const containerName = this.computedClass;
-
-        let props = {};
-        props.data = this.pieData.data;
-        props.container = containerName;
-        props.margin = { 
-            top: 20,
-            right: 20,
-            bottom: 30,
-            left: 40
-        };
-        props.key = this.pieData.key;
-
-        return props;
       }
   },
+  methods: {
+    setModel: function() {
+      const containerName = this.computedClass;
+
+      this.model.data = this.pieData.data;
+      this.model.container = containerName;
+      this.model.key = this.pieData.key;
+
+      return this.model;
+    },
+    createChart: function() {
+
+      const model = this.model;
+      this.setModel();
+
+      const pieChart = new Chart(model);
+      let chart = pieChart.initialise();
+
+      chart.g = pieChart.setGroup(chart.chartWidth / 2 , (chart.chartHeight / 2) );
+
+      new Arc(chart).draw();
+      new ArcText(chart).draw();
+      new Legend(chart).draw();
+
+    }
+  },
   mounted: function() { 
-
-    const model = this.createChartModel;
-
-    const pieChart = new Chart(model);
-    let chart = pieChart.initialise();
-
-    chart = Object.assign(chart, model);
-
-    chart.g = pieChart.setGroup(chart.chartWidth / 2 , (chart.chartHeight / 2) );
-
-    new Arc(chart).draw();
-    new ArcText(chart).draw();
-
-    // let createLegend = (data) => {
-        
-    //     let legend = chart.svg.selectAll(".legend") 
-    //             .data(pie(data))
-    //             .enter().append("g")
-    //             .attr("transform", function(d,i){
-    //                 return "translate(" + (legendWidth) + "," + (i * 15 + 20) + ")"; 
-    //             })      
-    //             .attr("class", "legend");   
-
-    //     legend.append("rect") 
-    //                 .attr("width", 10)
-    //                 .attr("height", 10)
-    //                 .attr("fill", function(d, i) {
-    //                     return colours(d.index);
-    //     });
-
-    //     legend.append("text") 
-    //             .text(function(d){
-    //                 return d.data.sessions + "  " + d.data.type;
-    //             })
-    //             .attr("class", "legend-text")
-    //             .attr("y", 10)
-    //             .attr("x", 11);
-    // }
-
-    // createLegend(chart.data);
+    this.createChart();
   }
 }
 </script>
@@ -91,15 +78,15 @@ export default {
   position: relative;
 }
 
-.c-pie__arc--0 {
+.c-pie__arc--0, .c-legend__rect--0 {
     fill: #c8feff;
 }
 
-.c-pie__arc--1 {
+.c-pie__arc--1, .c-legend__rect--1 {
     fill: #99cc66;
 }
 
-.c-pie__arc--2 {
+.c-pie__arc--2, .c-legend__rect--2 {
     fill: #c0c5ff;
 }
 
