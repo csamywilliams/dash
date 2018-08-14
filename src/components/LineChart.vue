@@ -147,6 +147,17 @@ export default {
   min-height: 300px;
 }
 
+.c-chart__linechart2 .c-line {
+  fill: none;
+  stroke: #019fde;
+  stroke-width: 3;
+}
+
+.c-chart__linechart2 .c-dot {
+  fill: #019fde;
+  stroke: #fff;
+}
+
 .c-line {
     fill: none;
     stroke: #ffab00;
