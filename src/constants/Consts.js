@@ -1,0 +1,20 @@
+export default {
+    SVG: "svg",
+    G: "g",
+    D: "d",
+    R: "r",
+    CLASS: "class",
+    TEXT: "text",
+    X: "x",
+    Y: "y",
+    CX: "cx",
+    CY: "cy",
+    LINE: "line",
+    PATH: "path",
+    ARC: "arc",
+    CIRCLE: "circle",
+    WIDTH: "width",
+    HEIGHT: "height",
+    DATE_DMY: "%d-%b-%y",
+    DOT_RADIUS: 5
+}
