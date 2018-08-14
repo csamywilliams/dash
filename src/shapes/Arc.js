@@ -45,15 +45,22 @@ class Arc {
 
     addPath() {
 
-        let arc = this.create(0, this.radius - 20);
-        let arcClass = this.className;
+        const arc = this.create(0, this.radius - 20);
+        const arcClass = this.className;
 
         this.chart.g.append(Consts.PATH)
                 .attr(Consts.D, arc)
                 .attr(Consts.CLASS, function(d) { 
                     return `${arcClass}__path ${arcClass}__path--${d.index}`;
-                } 
-        );
+                }) 
+                .transition().delay(function(d, i) { return i * 500; }).duration(500)
+                .attrTween('d', function(d) {
+                   var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+                   return function(t) {
+                     d.endAngle = i(t);
+                     return arc(d);
+                   };
+                });
 
     }
 

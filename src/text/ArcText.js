@@ -22,7 +22,7 @@ class ArcText {
 
         const arc = new Arc(this.chart);
         const radius = arc.getRadius();
-        let labelArc = arc.create(radius - 50, radius - 50);
+        const labelArc = arc.create(radius - 50, radius - 50);
         
         const arcText = "c-pie__text";
 
@@ -35,12 +35,7 @@ class ArcText {
                 return `${arcText} ${arcText}--${d.index}`;
             })
             .text(function(d) { return d.data.type; });
-
-
     }
-
-
- 
 
 }
 
