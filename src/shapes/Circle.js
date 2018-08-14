@@ -54,8 +54,8 @@ class Circle {
 
     resize(props) {
         this.chart.g.selectAll(`.${this.className}`)
-                    .attr("cx", function(d) { return props.xScale(d[props.xKey]); })
-                    .attr("cy", function(d) { return props.yScale(d[props.yKey]); });
+                    .attr(Consts.CX, function(d) { return props.xScale(d[props.xKey]); })
+                    .attr(Consts.CY, function(d) { return props.yScale(d[props.yKey]); });
     }
 
 }

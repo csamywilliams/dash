@@ -7,9 +7,10 @@ class Scale {
     
     constructor(chart) {
 
+        this.chart = chart;
         this.data = chart.data;
         this.parser = parseTime(Consts.DATE_DMY);
-        this.chart = chart;
+       
     }
 
     initialise() {

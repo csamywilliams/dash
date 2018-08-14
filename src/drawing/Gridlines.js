@@ -16,17 +16,11 @@ class Gridlines {
         this.xScale = this.chart.xScale;
         this.yScale = this.chart.yScale;
 
-        this.create();
+        this.create(this.classNameX);
+        this.create(this.classNameY); 
     }
 
-    create() {
-
-        this.createG(this.classNameX);
-        this.createG(this.classNameY);        
-                    
-    }
-
-    createG(className) {
+    create(className) {
         this.chart.g.append(Consts.G)
             .attr(Consts.CLASS, className);
     }

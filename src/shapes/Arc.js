@@ -7,10 +7,9 @@ class Arc {
 
        this.chart = chart; 
        this.data = chart.data;
-
        this.className = "c-pie";
-
        this.radius = Math.min(this.chart.chartWidth, this.chart.chartHeight) / 1.75;
+       
     }
 
     create(outerRadius, innerRadius) {

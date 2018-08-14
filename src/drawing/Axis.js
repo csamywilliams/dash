@@ -25,9 +25,9 @@ class Axis {
     }
 
     createG(type) {
+        
         this.chart.g.append(Consts.G)
             .attr(Consts.CLASS, `c-axis-${type}`);
-
     }
 
     addXAxis(height, xScale, type) {
@@ -42,7 +42,6 @@ class Axis {
 
         this.chart.g.select(`.c-axis-${type}`)
             .call(d3.axisLeft(yScale));
-
     }
 
     resize(chart) {

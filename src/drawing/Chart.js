@@ -3,12 +3,12 @@ import Consts from "../constants/Consts";
 
 class Chart {
 
-    constructor(props) {
+    constructor(model) {
 
-        this.container = props.container,
-        this.data = props.data;
-        this.svgChart = props;
-        this.margin = props.margin;
+        this.container = model.container,
+        this.data = model.data;
+        this.margin = model.margin;
+        this.model = model;
     }
 
     initialise() {
@@ -25,12 +25,14 @@ class Chart {
         this.svg = this.create();
         this.svg = this.setSize(width, height);
     
-        const chart = {
+        let chart = {
             svg: this.svg,
             g: this.g,
             chartWidth: this.width,
             chartHeight: this.height
-        }
+        };
+
+        chart = Object.assign(chart, this.model);
 
         return chart;
         
@@ -40,8 +42,7 @@ class Chart {
         
         return d3.select(`.${this.container}`)
             .append(Consts.SVG)
-            
-
+        
     }
 
     setSize(w, h) {
@@ -78,10 +79,10 @@ class Chart {
 
     getContainerSize() {
 
-        let c = document.getElementsByClassName(`${this.container}`)[0];
+        let container = document.getElementsByClassName(`${this.container}`)[0];
 
-        this.width = c.offsetWidth - this.margin.left - this.margin.right;
-        this.height = c.offsetHeight - this.margin.top - this.margin.bottom;
+        this.width = container.offsetWidth - this.margin.left - this.margin.right;
+        this.height = container.offsetHeight - this.margin.top - this.margin.bottom;
     }
 
 }

@@ -37,7 +37,8 @@ export default {
         margin: "",
         translateX: "",
         translateY: ""
-      }
+      },
+      chart: {}
     }
   },
   computed: {
@@ -49,35 +50,35 @@ export default {
   },
   methods: {
     setModel: function() {
-        this.model.container = this.computedClass;
-        this.model.xKey = (this.chartData.axis.x).toLowerCase();
-        this.model.yKey = (this.chartData.axis.y).toLowerCase();
-        this.model.labelX = this.chartData.axis.labelX;
-        this.model.labelY = this.chartData.axis.labelY;
-        this.model.config = {
-          curve: this.chartData.settings.curve,
-          radius: this.chartData.settings.radius,
-          tooltips: this.chartData.settings.tooltips,
-          gridline: this.chartData.settings.gridlines
-        };
-        this.model.data = this.chartData.data;
-        this.model.margin = {top: 20, right: 60, bottom: 50, left: 80};
-        this.model.translateX = this.model.margin.left,
-        this.model.translateY = this.model.margin.top
+      this.model.container = this.computedClass;
+      this.model.xKey = (this.chartData.axis.x).toLowerCase();
+      this.model.yKey = (this.chartData.axis.y).toLowerCase();
+      this.model.labelX = this.chartData.axis.labelX;
+      this.model.labelY = this.chartData.axis.labelY;
+      this.model.config = {
+        curve: this.chartData.settings.curve,
+        radius: this.chartData.settings.radius,
+        tooltips: this.chartData.settings.tooltips,
+        gridline: this.chartData.settings.gridlines
+      };
+      this.model.data = this.chartData.data;
+      this.model.margin = {top: 20, right: 60, bottom: 50, left: 80};
+      this.model.translateX = this.model.margin.left,
+      this.model.translateY = this.model.margin.top
     },
     createDataset: function(model) {
-        const formatTime = parseTime(Consts.DATE_DMY);
+      const formatTime = parseTime(Consts.DATE_DMY);
 
-        const dataset = model.data.map((val) => {
+      const dataset = model.data.map((val) => {
 
-            let item = {};
-            item[model.xKey] = formatTime(val[model.xKey]),
-            item[model.yKey] = val[model.yKey]
-            
-            return item;
-        });
+          let item = {};
+          item[model.xKey] = formatTime(val[model.xKey]),
+          item[model.yKey] = val[model.yKey]
+          
+          return item;
+      });
 
-        return dataset;
+      return dataset;
     },
     createChart: function() {
 
@@ -85,38 +86,36 @@ export default {
       this.setModel();
 
       const lineChart = new Chart(model);
-      let chart = lineChart.initialise();
+      this.chart = lineChart.initialise();
 
-      chart = Object.assign(chart, model);
-
-      if(chart.svg instanceof Error) {
+      if(this.chart.svg instanceof Error) {
         return;
       }
 
-      chart.g = lineChart.setGroup(chart.margin.left, chart.margin.top);
+      this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
 
-      const scale = new Scale(chart);
+      const scale = new Scale(this.chart);
       const xyScales = scale.initialise();
 
-      chart = { ...chart, xScale: xyScales.xScale, yScale: xyScales.yScale };
+      this.chart = { ...this.chart, xScale: xyScales.xScale, yScale: xyScales.yScale };
 
-      const dataset = this.createDataset(chart);
+      const dataset = this.createDataset(this.chart);
 
-      const line = new Line(chart, dataset)
+      const line = new Line(this.chart, dataset)
       line.draw();
 
-      const axis = new Axis(chart);
-      const axisText = new AxisText(chart);
+      const axis = new Axis(this.chart);
+      const axisText = new AxisText(this.chart);
 
-      const gridlines = new Gridlines(chart);
-      gridlines.addMultiGridLines(chart.config.gridline);
+      const gridlines = new Gridlines(this.chart);
+      gridlines.addMultiGridLines(this.chart.config.gridline);
       
-      const dots = new Circle(chart, dataset)
+      const dots = new Circle(this.chart, dataset);
       dots.draw();
 
       window.addEventListener('resize', () => {
           
-          let tempChart = chart;  
+          let tempChart = this.chart;  
           let resizeChart = lineChart.resize();
           tempChart = Object.assign(tempChart, resizeChart); //update obj with new h/w
 
@@ -126,7 +125,7 @@ export default {
           line.resize(tempChart);
           axis.resize(tempChart);
           axisText.resize(tempChart);
-          gridlines.addMultiGridLines(chart.config.gridline);
+          gridlines.addMultiGridLines(tempChart.config.gridline);
           dots.resize(tempChart);
 
       });

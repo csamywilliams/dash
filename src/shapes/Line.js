@@ -51,7 +51,7 @@ class Line {
 
         this.chart.g.select(`.${this.className}`)
             .datum(this.data)
-            .attr("d", this.create(chart))
+            .attr(Consts.D, this.create(chart))
             .call(Transition);
     }
 
