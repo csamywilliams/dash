@@ -2,7 +2,7 @@
   <div :class="computedClass">
     <svg :class="computedSVGClass">
       <g :class="computedGClass">
-        <Axis :axisModel="model" axis="x"/>
+        <Axis :axisModel="model" axis="x" :chartId="model.id"/>
       </g>
     </svg> 
   </div>
@@ -91,7 +91,6 @@ export default {
     },
     createDataset: function(model) {
       const formatTime = parseTime(Consts.DATE_DMY);
-
 
       const dataset = this.model.data.map((val) => {
 

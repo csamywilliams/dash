@@ -9,12 +9,19 @@ import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
 import Axis from "../drawing/Axis";
 
+import Dimensions from "../mixins/Dimensions";
+
 export default {
   name: 'Axis',
+  mixins: [Dimensions],
   props: {
     axisModel: Object,
     axis: {
         type: String,
+        required: true
+    },
+    chartId: {
+        type: Number,
         required: true
     }
   },
@@ -34,6 +41,7 @@ export default {
 
     setModel: function() {
         this.model = this.axisModel;
+        this.chartId = this.chartId;
     },
   
     createAxis: function() {
@@ -46,32 +54,30 @@ export default {
     },
 
     createXAxis: function() {
-        debugger;
 
         const xScale = this.model.xScale;
-        const height = this.getChartHeight();
+        const height = this.height;
 
         d3.select(`.c-chart__axis-${this.axis}--${this.model.id}`)
-            .attr("transform", "translate(0," + height + ")")
-            .call(d3.axisBottom(xScale)
-                    .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
+            .attr("transform", "translate(0," + height + ")");
+          
+          //.call(d3.axisBottom(xScale)
+          //s          .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
     },
 
-    getChartDimensions: function() {
-        const cls = `c-chart__svg--${this.model.id}`;
+    // getChartDimensions: function() {
+    //     const cls = `c-chart__container--${this.model.id}`;
 
-        return document.getElementsByClassName(cls)[0].getBBox();
-    },
+    //     return document.getElementsByClassName(cls)[0];
+    // },
 
-    getChartHeight: function() {
-        const h = this.getChartDimensions().height;
-        debugger;
-        return h;
-    },
+    // getChartHeight: function() {
+    //     return this.getChartDimensions().offsetHeight;
+    // },
 
-    getChartWidth: function() {
-        return this.getChartDimensions().width;
-    },
+    // getChartWidth: function() {
+    //     return this.getChartDimensions().offsetWidth;
+    // },
 
     resize: function() {
        window.addEventListener('resize', () => {
