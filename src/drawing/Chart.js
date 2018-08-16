@@ -5,6 +5,7 @@ class Chart {
 
     constructor(model) {
 
+        this.id = model.id;
         this.container = model.container,
         this.data = model.data;
         this.margin = model.margin;
@@ -39,9 +40,8 @@ class Chart {
     }
 
     create() {
-        
-        return d3.select(`.${this.container}`)
-            .append(Consts.SVG)
+
+        return d3.select(`.c-chart__container--${this.id} svg`);
         
     }
 
@@ -51,13 +51,13 @@ class Chart {
                     .attr(Consts.HEIGHT, h)
                     .attr("preserveAspectRatio", "xMinYMin meet")
                     .attr("viewBox", "0 0 " + w + " " + h)
-                    .classed("svg-content", true);
+                    .classed(`c-chart__svg--${this.id}`, true);
     }
 
     setGroup(x, y) {
 
-        return this.svg.append(Consts.G)
-                    .attr("transform", "translate(" + x + "," + y + ")");
+        return d3.select(`.c-chart__g--${this.id}`).attr("transform", "translate(" + x + "," + y + ")");
+
     }
 
     resize() {
