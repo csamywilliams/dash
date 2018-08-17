@@ -27,7 +27,9 @@ export default {
   },
   data: function() {
     return {
-      model: {}
+      model: {},
+      xScale: {},
+      yScale: {}
     }
   },
   computed: {
@@ -49,63 +51,92 @@ export default {
         if(this.axis === Consts.X) {
             this.createXAxis();
         } else if (this.axis === Consts.Y) {
-
+            this.createYAxis();
         }
     },
 
-    createXAxis: function() {
+    createXScale(key) {
+        const parser = parseTime(Consts.DATE_DMY);
 
-        const xScale = this.model.xScale;
-        const height = this.height;
+        const minRange = this.getMinScale(key, parser);
+        const maxRange = this.getMaxScale(key, parser);
 
-        d3.select(`.c-chart__axis-${this.axis}--${this.model.id}`)
-            .attr("transform", "translate(0," + height + ")");
-          
-          //.call(d3.axisBottom(xScale)
-          //s          .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
+        return d3.scaleTime()
+            .domain([minRange, maxRange])
+            .range([0, this.getAxisWidth()]);
     },
 
-    // getChartDimensions: function() {
-    //     const cls = `c-chart__container--${this.model.id}`;
+    createYScale(key) {
+         var yDomain = d3.max(this.model.data, function (d) { 
+            return d[key]; 
+        })
 
-    //     return document.getElementsByClassName(cls)[0];
-    // },
+        return d3.scaleLinear()
+            .domain([0, yDomain])
+            .range([this.getAxisHeight(), 0]);
+    },
 
-    // getChartHeight: function() {
-    //     return this.getChartDimensions().offsetHeight;
-    // },
+    createXAxis() {
 
-    // getChartWidth: function() {
-    //     return this.getChartDimensions().offsetWidth;
-    // },
+        this.xScale = this.createXScale(this.model.xKey);
+        const height = this.getAxisHeight();
+
+        const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
+
+        d3.select(scaleG)
+            .attr("transform", "translate(0," + height + ")")
+            .call(d3.axisBottom(this.xScale)
+            .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
+    },
+
+    createYAxis() {
+        this.yScale = this.createYScale(this.model.yKey);
+
+        const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
+
+        d3.select(scaleG)
+            .call(d3.axisLeft(this.yScale));
+    },
+
+    getMaxScale(target, parser) {
+        return d3.max(this.model.data, function (d) { 
+            return parser(d[target]); 
+        });
+    },
+
+    getMinScale(target, parser) {
+        return d3.min(this.model.data, function (d) { 
+            return parser(d[target]); 
+        });
+    },
+
+    getAxisHeight() {
+        return this.height - this.model.margin.top - this.model.margin.bottom;
+    },
+
+    getAxisWidth() {
+        return this.width - this.model.margin.left - this.model.margin.right;
+    },
 
     resize: function() {
        window.addEventListener('resize', () => {
           
-          // let tempChart = this.chart;  
-          // let resizeChart = lineChart.resize();
-          // tempChart = Object.assign(tempChart, resizeChart); //update obj with new h/w
-
-          // let tempScale = scale.resize(tempChart);  //update the xScale/yScale
-          // tempChart = Object.assign(tempChart, tempScale);
-
-          // line.resize(tempChart);
-          // axis.resize(tempChart);
-          // axisText.resize(tempChart);
-          // gridlines.addMultiGridLines(tempChart.config.gridline);
-          // dots.resize(tempChart);
+          this.xScale.range([0, this.width - this.model.margin.left]);
+          this.yScale.range([this.height, 0]);
 
       });
 
     }
   },
-  mounted: function() { 
-
-    const model = this.model;
+  mounted: function() {
+    
     this.setModel();
 
+  },
+  updated: function() { 
 
     this.createAxis();
+    
   }
 }
 </script>

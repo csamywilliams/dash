@@ -2,7 +2,8 @@
   <div :class="computedClass">
     <svg :class="computedSVGClass">
       <g :class="computedGClass">
-        <Axis :axisModel="model" axis="x" :chartId="model.id"/>
+        <Axis :axisModel="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
+        <Axis :axisModel="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
       </g>
     </svg> 
   </div>
@@ -188,7 +189,7 @@ export default {
 
 <style>
 
-.c-chart__linechart1, .c-chart__linechart2 {
+.c-chart__container {
   width: 100%;
   height: 100%;
   min-height: 300px;

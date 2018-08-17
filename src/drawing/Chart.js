@@ -20,8 +20,8 @@ class Chart {
 
         this.getContainerSize();
 
-        let width = this.width + this.margin.left + this.margin.right;
-        let height = this.height + this.margin.top + this.margin.bottom;
+        const width = this.width + this.margin.left + this.margin.right;
+        const height = this.height + this.margin.top + this.margin.bottom;
 
         this.svg = this.create();
         this.svg = this.setSize(width, height);
