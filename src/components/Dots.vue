@@ -1,0 +1,101 @@
+<template>
+  <circle :class="computedClass"></circle>
+</template>
+
+<script>
+
+import * as d3 from "d3";
+import Consts from "../constants/Consts";
+import Dimensions from "../mixins/Dimensions";
+import Transition from "../animation/Transition";
+import Scale from "../drawing/Scale";
+
+export default {
+  name: 'Dots',
+  mixins: [Dimensions],
+  props: {
+    chart: Object,
+    chartId: {
+        type: Number,
+        required: true
+    }
+  },
+  data: function() {
+    return {
+      model: {},
+      Scale: "",
+    }
+  },
+  computed: {
+      computedClass: function() {
+        let className = `c-chart__dots c-chart__dots--${this.model.id}`;
+
+        return className;
+      },
+  },
+  methods: {
+
+    setModel() {
+        this.model = this.chart;
+        this.chartId = this.chartId;
+    },
+  
+    createDots() {
+
+        const clsName = `c-chart__dots--${this.model.id}`;
+        const parentCls = `.c-chart__linedots--${this.model.id}`;
+
+        const xScale = this.Scale.createXScale(this.getModel());
+        const yScale = this.Scale.createYScale(this.getModel());
+
+        const chart = this.chart;
+
+        const circles = d3.select(parentCls).selectAll(`.${clsName}`)
+                .data(chart.dataset)
+                .enter()
+                .append(Consts.CIRCLE)
+                .attr(Consts.CLASS, clsName)
+                .attr(Consts.CX, function(d) {
+                    return xScale(d[chart.xKey]) 
+                })
+                .attr(Consts.CY, function(d) { 
+                    return yScale(d[chart.yKey]) 
+                })
+                .attr(Consts.R, 5);
+    },
+
+ 
+    getModel() {
+
+        const temp = Object.assign(this.chart, {
+            width: this.width,
+            height: this.height
+        })
+
+        return temp;
+    },
+
+    resize() {
+       window.addEventListener('resize', () => {
+          
+      });
+
+    }
+  },
+  mounted() {
+
+    this.setModel();
+
+  },
+  updated() { 
+    this.Scale = new Scale(this.model);
+    this.createDots();
+
+  }
+}
+</script>
+
+<style>
+
+
+</style>

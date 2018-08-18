@@ -31,7 +31,7 @@ export default {
   },
   components: {
     Axis,
-    LinePath
+    LinePath,
   },
   data: function() {
     return {
@@ -116,11 +116,6 @@ export default {
       }
 
       this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
-
-
-      // this.createLine();
-
-      //this.createAxis();
 
       // this.createGridlines();
  
@@ -212,7 +207,7 @@ export default {
     stroke-width: 3;
 }
 
-.c-dot {
+.c-chart__dots--1 {
     fill: #ffab00;
     stroke: #fff;
 }

@@ -1,8 +1,13 @@
 <template>
-  <path :class="computedClass"></path>
+    <g :class="computedGClass">
+        <path :class="computedClass"></path>
+        <Dots :chart="chart" :chartId="chart.id" />
+    </g>
 </template>
 
 <script>
+
+import Dots from "./Dots";
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
@@ -13,6 +18,7 @@ import Scale from "../drawing/Scale";
 export default {
   name: 'LinePath',
   mixins: [Dimensions],
+  components: { Dots },
   props: {
     chart: Object,
     chartId: {
@@ -27,11 +33,12 @@ export default {
     }
   },
   computed: {
-      computedClass: function() {
-        let className = `c-chart__line c-chart__line--${this.model.id}`;
-
-        return className;
-      },
+    computedClass: function() {
+        return `c-chart__line c-chart__line--${this.model.id}`;
+    },
+    computedGClass: function() {
+        return `c-chart__linedots c-chart__linedots--${this.model.id}`;
+    },
   },
   methods: {
 
@@ -78,16 +85,7 @@ export default {
 
         return line;
     },
-
-    getLineHeight() {
-        return this.height - this.model.margin.top - this.model.margin.bottom;
-    },
-
-    getLineWidth() {
-        return this.width - this.model.margin.left - this.model.margin.right;
-    },
-
- 
+    
     getLineModel() {
 
         const temp = Object.assign(this.chart, {
