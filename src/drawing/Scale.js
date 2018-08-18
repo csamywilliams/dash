@@ -6,64 +6,38 @@ import { parseTime } from "../utilities/Utilities";
 class Scale {
     
     constructor(chart) {
-
-        this.chart = chart;
-        this.data = chart.data;
         this.parser = parseTime(Consts.DATE_DMY);
-       
     }
 
-    initialise() {
-        this.xScale = this.createXScale(this.chart.xKey);
-        this.yScale = this.createYScale(this.chart.yKey);
+    createXScale(chart) {
 
-        return {
-            xScale: this.xScale,
-            yScale: this.yScale
-        }
-    }
-
-    createXScale(key) {
         return d3.scaleTime()
-            .domain([this.getMinScale(key, this.parser), this.getMaxScale(key, this.parser)])
-            .range([0, this.chart.chartWidth]);
+            .domain([this.getMinScale(chart.data, chart.xKey, this.parser), this.getMaxScale(chart.data, chart.xKey, this.parser)])
+            .range([0, chart.width]);
     }
 
-    createYScale(key) {
+    createYScale(chart) {
 
-        var yDomain = d3.max(this.data, function (d) { 
-            return d[key]; 
+        var yDomain = d3.max(chart.data, function (d) { 
+            return d[chart.yKey]; 
         })
 
         return d3.scaleLinear()
             .domain([0, yDomain])
-            .range([this.chart.chartHeight, 0]);
+            .range([chart.height, 0]);
     }
 
-    getMaxScale(target, parser) {
-        return d3.max(this.data, function (d) { 
+    getMaxScale(data, target, parser) {
+        return d3.max(data, function (d) { 
             return parser(d[target]); 
         });
     }
 
-    getMinScale(target, parser) {
-        return d3.min(this.data, function (d) { 
+    getMinScale(data, target, parser) {
+        return d3.min(data, function (d) { 
             return parser(d[target]); 
         });
     }
-
-    resize(chart) {
-        
-        chart.xScale.range([0, chart.chartWidth - chart.margin.left]);
-        chart.yScale.range([chart.chartHeight, 0]);
-
-        return {
-            xScale: chart.xScale,
-            yScale: chart.yScale
-        }
-
-    }
-
 }
 
 export default Scale;

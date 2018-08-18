@@ -5,17 +5,19 @@
 <script>
 
 import * as d3 from "d3";
+import Vue from 'vue';
 import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
-import Axis from "../drawing/Axis";
-
 import Dimensions from "../mixins/Dimensions";
+import Scale from "../drawing/Scale";
+
+import { UPDATE_LINECHART } from 'vuex';
 
 export default {
   name: 'Axis',
   mixins: [Dimensions],
   props: {
-    axisModel: Object,
+    chart: Object,
     axis: {
         type: String,
         required: true
@@ -28,8 +30,10 @@ export default {
   data: function() {
     return {
       model: {},
-      xScale: {},
-      yScale: {}
+      axisModel: {},
+      xScale: "",
+      yScale: "",
+      Scale: "",
     }
   },
   computed: {
@@ -42,7 +46,7 @@ export default {
   methods: {
 
     setModel: function() {
-        this.model = this.axisModel;
+        this.model = this.chart;
         this.chartId = this.chartId;
     },
   
@@ -55,31 +59,11 @@ export default {
         }
     },
 
-    createXScale(key) {
-        const parser = parseTime(Consts.DATE_DMY);
-
-        const minRange = this.getMinScale(key, parser);
-        const maxRange = this.getMaxScale(key, parser);
-
-        return d3.scaleTime()
-            .domain([minRange, maxRange])
-            .range([0, this.getAxisWidth()]);
-    },
-
-    createYScale(key) {
-         var yDomain = d3.max(this.model.data, function (d) { 
-            return d[key]; 
-        })
-
-        return d3.scaleLinear()
-            .domain([0, yDomain])
-            .range([this.getAxisHeight(), 0]);
-    },
-
     createXAxis() {
 
-        this.xScale = this.createXScale(this.model.xKey);
-        const height = this.getAxisHeight();
+        this.xScale = this.Scale.createXScale(this.getAxisModel());
+
+        const height = this.height;
 
         const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
 
@@ -90,7 +74,7 @@ export default {
     },
 
     createYAxis() {
-        this.yScale = this.createYScale(this.model.yKey);
+        this.yScale = this.Scale.createYScale(this.getAxisModel());
 
         const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
 
@@ -98,24 +82,14 @@ export default {
             .call(d3.axisLeft(this.yScale));
     },
 
-    getMaxScale(target, parser) {
-        return d3.max(this.model.data, function (d) { 
-            return parser(d[target]); 
-        });
-    },
+    getAxisModel() {
 
-    getMinScale(target, parser) {
-        return d3.min(this.model.data, function (d) { 
-            return parser(d[target]); 
-        });
-    },
+        const temp = Object.assign(this.chart, {
+            width: this.width,
+            height: this.height
+        })
 
-    getAxisHeight() {
-        return this.height - this.model.margin.top - this.model.margin.bottom;
-    },
-
-    getAxisWidth() {
-        return this.width - this.model.margin.left - this.model.margin.right;
+        return temp;
     },
 
     resize: function() {
@@ -124,19 +98,17 @@ export default {
           this.xScale.range([0, this.width - this.model.margin.left]);
           this.yScale.range([this.height, 0]);
 
-      });
-
-    }
+        })
+    },
   },
   mounted: function() {
-    
     this.setModel();
-
+    this.Scale = new Scale(this.chart);
   },
   updated: function() { 
-
-    this.createAxis();
     
+    this.createAxis();
+
   }
 }
 </script>

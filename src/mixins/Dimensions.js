@@ -2,8 +2,10 @@ const Dimensions = {
 
     data() {
       return {
-        width: '',
-        height: ''
+        containerWidth: "",
+        containerHeight: "",
+        height: "",
+        width: ""
       }
     },
     methods: {
@@ -18,11 +20,24 @@ const Dimensions = {
     
         getChartWidth: function() {
             return this.getChartDimensions().offsetWidth;
-        }
+        },
+
+        getSVGHeight() {
+            return this.containerHeight - this.chart.margin.top - this.chart.margin.bottom;
+        },
+    
+        getSVGWidth() {
+            return this.containerWidth - this.chart.margin.left - this.chart.margin.right;
+        },
+    
     },
     mounted() {
-        this.height = this.getChartHeight();
-        this.width = this.getChartWidth();
+        this.containerHeight = this.getChartHeight();
+        this.containerWidth = this.getChartWidth();
+    },
+    updated() {
+        this.height = this.getSVGHeight();
+        this.width = this.getSVGWidth();
     }
 }
 

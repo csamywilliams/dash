@@ -7,8 +7,13 @@
 </template>
 
 <script>
-import LineChart from './components/LineChart.vue';
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+import LineChart from './charts/LineChart.vue';
 import PieChart from './components/PieChart.vue';
+
+Vue.use(Vuex);
 
 const lineChart1 = {
   id: 1,
@@ -69,9 +74,28 @@ const pieData1 = {
   key: "sessions"
 }
 
+const mutations = {
+  UPDATE_LINECHART (state, v) {
+    state.linechart = Object.assign(state.linechart, v);
+  }
+};
+
+const store = new Vuex.Store({
+  state: {
+    linechart: {
+      id: 0,
+      xScale: "",
+      yScale: ""
+    }
+  },
+  mutations,
+
+});
+
 
 export default {
   name: 'app',
+  store,
   components: {
     LineChart,
     PieChart

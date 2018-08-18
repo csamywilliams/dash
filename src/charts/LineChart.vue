@@ -2,8 +2,9 @@
   <div :class="computedClass">
     <svg :class="computedSVGClass">
       <g :class="computedGClass">
-        <Axis :axisModel="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
-        <Axis :axisModel="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
+        <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
+        <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
+        <LinePath :chart="model" :chartId="model.id" />
       </g>
     </svg> 
   </div>
@@ -11,15 +12,15 @@
 
 <script>
 
-import Axis from './Axis';
+import Axis from "../components/Axis";
+import LinePath from "../components/LinePath";
 
 import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
 import Chart from "../drawing/Chart";
-import Scale from "../drawing/Scale";
-// import Axis from "../drawing/Axis";
+
 import Gridlines from "../drawing/Gridlines";
-import Line from "../shapes/Line";
+
 import Circle from "../shapes/Circle";
 import AxisText from "../text/AxisText";
 
@@ -29,7 +30,8 @@ export default {
     chartData: Object
   },
   components: {
-    Axis
+    Axis,
+    LinePath
   },
   data: function() {
     return {
@@ -115,7 +117,6 @@ export default {
 
       this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
 
-      this.createScales(this.chart);
 
       // this.createLine();
 
@@ -128,18 +129,18 @@ export default {
       // this.resize();
 
     },
-    createScales: function(chart) {
-        const scale = new Scale(chart);
-        const scales = scale.initialise();
+    // createScales: function(chart) {
+    //     const scale = new Scale(chart);
+    //     const scales = scale.initialise();
 
-        this.chart.xScale = scales.xScale;
-        this.chart.yScale = scales.yScale;
-    },
+    //     this.chart.xScale = scales.xScale;
+    //     this.chart.yScale = scales.yScale;
+    // },
 
-    createLine: function() {
-        const line = new Line(this.chart, this.model.dataset)
-        line.draw();
-    },
+    // createLine: function() {
+    //     const line = new Line(this.chart, this.model.dataset)
+    //     line.draw();
+    // },
 
     createAxis: function() {
         const axis = new Axis(this.chart);
@@ -178,7 +179,6 @@ export default {
   },
   mounted: function() { 
 
-    const model = this.model;
     this.setModel();
 
     this.createDataset();
@@ -206,7 +206,7 @@ export default {
   stroke: #fff;
 }
 
-.c-line {
+.c-chart__line {
     fill: none;
     stroke: #ffab00;
     stroke-width: 3;
