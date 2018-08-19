@@ -5,6 +5,8 @@
         <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
         <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
         <LinePath :chart="model" :chartId="model.id" />
+        <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
+        <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
       </g>
     </svg> 
   </div>
@@ -14,6 +16,7 @@
 
 import Axis from "../components/Axis";
 import LinePath from "../components/LinePath";
+import AxisText from "../text/AxisText";
 
 import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
@@ -22,7 +25,6 @@ import Chart from "../drawing/Chart";
 import Gridlines from "../drawing/Gridlines";
 
 import Circle from "../shapes/Circle";
-import AxisText from "../text/AxisText";
 
 export default {
   name: 'LineChart',
@@ -31,6 +33,7 @@ export default {
   },
   components: {
     Axis,
+    AxisText,
     LinePath,
   },
   data: function() {
@@ -135,10 +138,10 @@ export default {
     //     line.draw();
     // },
 
-    createAxis: function() {
-        const axis = new Axis(this.chart);
-        const axisText = new AxisText(this.chart);
-    },
+    // createAxis: function() {
+    //     const axis = new Axis(this.chart);
+    //     const axisText = new AxisText(this.chart);
+    // },
     
     createGridlines: function() {
         const gridlines = new Gridlines(this.chart);
