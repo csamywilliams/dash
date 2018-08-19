@@ -4,29 +4,29 @@ import Consts from "../constants/Consts";
 class Tooltip {
 
     constructor(chart) {
-   
-        this.className = "c-tooltip";
+
         this.target = "body";
         this.element = "div";
         this.chart = chart;
-
+    
     }
 
     create() {
 
-        return d3.select(this.target)
+        const className = `c-chart__tooltip c-chart__tooltip--${this.chart.id}`;
+
+        return d3.select(`.${className}`)
             .append(this.element)
-            .attr(Consts.CLASS, this.className)
+            .attr(Consts.CLASS, className)
             .style("opacity", 0);
     }
 
     draw(circles) {
 
-        const tooltipDiv = this.create();
+        const chart = this.chart;
+        let tooltipDiv = this.create();
 
-        let chart = this.chart;
-
-        var dots = circles.on("mouseover", function (d) {
+        const dots = circles.on("mouseover", function (d) {
             tooltipDiv.transition()
                 .duration(200)
                 .style("opacity", .9);

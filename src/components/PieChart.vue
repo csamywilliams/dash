@@ -31,9 +31,7 @@ export default {
   },
   computed: {
       computedClass: function() {
-            let className = `c-chart__${this.pieData.containerName}`;
-
-            return className;
+        return `c-chart__${this.pieData.containerName}`;
       }
   },
   methods: {

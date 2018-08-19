@@ -1,6 +1,5 @@
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Default from "../constants/Defaults";
 import { parseTime } from "../utilities/Utilities";
 
 class Scale {

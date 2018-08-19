@@ -17,13 +17,10 @@
 import Axis from "../components/Axis";
 import LinePath from "../components/LinePath";
 import AxisText from "../text/AxisText";
-
 import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
 import Chart from "../drawing/Chart";
-
 import Gridlines from "../drawing/Gridlines";
-
 import Circle from "../shapes/Circle";
 
 export default {
@@ -58,24 +55,18 @@ export default {
     }
   },
   computed: {
-      computedClass: function() {
-        const className = `c-chart__container c-chart__container--${this.chartData.id}`;
-
-        return className;
-      },
-      computedSVGClass: function() {
-        const className = `c-chart__svg c-chart__svg--${this.chartData.id}`;
-
-        return className;
-      },
-      computedGClass: function() {
-        const className = `c-chart__g c-chart__g--${this.chartData.id}`;
-
-        return className;
-      }
+    computedClass() {
+        return `c-chart__container c-chart__container--${this.chartData.id}`;
+    },
+    computedSVGClass() {
+        return `c-chart__svg c-chart__svg--${this.chartData.id}`;
+    },
+    computedGClass() {
+        return `c-chart__g c-chart__g--${this.chartData.id}`;
+    }
   },
   methods: {
-    setModel: function() {
+    setModel() {
       this.model.id = this.chartData.id;
       this.model.container = this.computedClass;
       this.model.xKey = (this.chartData.axis.x).toLowerCase();
@@ -93,7 +84,7 @@ export default {
       this.model.translateX = this.model.margin.left,
       this.model.translateY = this.model.margin.top
     },
-    createDataset: function(model) {
+    createDataset(model) {
       const formatTime = parseTime(Consts.DATE_DMY);
 
       const dataset = this.model.data.map((val) => {
@@ -105,9 +96,9 @@ export default {
           return item;
       });
 
-       this.model.dataset = dataset;
+      this.model.dataset = dataset;
     },
-    createChart: function() {
+    createChart() {
 
       const lineChart = new Chart(this.model);
       this.chart = lineChart.initialise();
@@ -125,59 +116,24 @@ export default {
       // this.resize();
 
     },
-    // createScales: function(chart) {
-    //     const scale = new Scale(chart);
-    //     const scales = scale.initialise();
 
-    //     this.chart.xScale = scales.xScale;
-    //     this.chart.yScale = scales.yScale;
-    // },
-
-    // createLine: function() {
-    //     const line = new Line(this.chart, this.model.dataset)
-    //     line.draw();
-    // },
-
-    // createAxis: function() {
-    //     const axis = new Axis(this.chart);
-    //     const axisText = new AxisText(this.chart);
-    // },
-    
-    createGridlines: function() {
+    createGridlines() {
         const gridlines = new Gridlines(this.chart);
         gridlines.addMultiGridLines(this.chart.config.gridline);
     },
 
-    createDots: function() {
+    createDots() {
         const dots = new Circle(this.chart, this.model.dataset);
         dots.draw();
     }, 
-
-    resize: function() {
-       window.addEventListener('resize', () => {
-          
-          // let tempChart = this.chart;  
-          // let resizeChart = lineChart.resize();
-          // tempChart = Object.assign(tempChart, resizeChart); //update obj with new h/w
-
-          // let tempScale = scale.resize(tempChart);  //update the xScale/yScale
-          // tempChart = Object.assign(tempChart, tempScale);
-
-          // line.resize(tempChart);
-          // axis.resize(tempChart);
-          // axisText.resize(tempChart);
-          // gridlines.addMultiGridLines(tempChart.config.gridline);
-          // dots.resize(tempChart);
-
-      });
-
-    }
   },
   mounted: function() { 
 
     this.setModel();
 
     this.createDataset();
+  },
+  updated() {
     this.createChart();
   }
 }
@@ -213,7 +169,7 @@ export default {
     stroke: #fff;
 }
 
-.c-tooltip {
+.c-chart__tooltip {
     position: absolute;			
     text-align: center;			
     width: 60px;					

@@ -76,19 +76,29 @@ export default {
             .text(this.chart.labelY);
     },
 
-    resize: function() {
-       window.addEventListener('resize', () => {
-          
-        
+    onResize: function() {
 
-        })
+        const w = this.width / 2;
+        const h = this.height + this.chart.margin.bottom - 10;
+
+        d3.select(`.c-chart__axistext-x--${this.model.id}`)
+            .attr("transform", `translate(${w}, ${h})`);
+
+        d3.select(`.c-chart__axistext-${this.axis}-y--${this.model.id}`)
+            .attr("y", 0 - this.chart.margin.right)
+            .attr("x", 0 - (this.height / 2))
+        },
     },
-  },
-  mounted: function() {
-    this.setModel();
-  },
-  updated: function() { 
-    this.createAxisText();
-  }
+    mounted: function() {
+        this.setModel();
+
+        window.addEventListener('resize', this.onResize);
+    },
+    updated: function() { 
+        this.createAxisText();
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
+    }
 }
 </script>

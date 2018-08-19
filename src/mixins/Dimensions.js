@@ -29,15 +29,30 @@ const Dimensions = {
         getSVGWidth() {
             return this.containerWidth - this.chart.margin.left - this.chart.margin.right;
         },
+
+        onResize() {
+            this.containerHeight = this.getChartHeight();
+            this.containerWidth = this.getChartWidth();
+            this.height = this.getSVGHeight();
+            this.width = this.getSVGWidth();
+
+            console.log(this.height);
+            console.log(this.width);
+        }
     
     },
     mounted() {
         this.containerHeight = this.getChartHeight();
         this.containerWidth = this.getChartWidth();
+
+        window.addEventListener('resize', this.onResize);
     },
     updated() {
         this.height = this.getSVGHeight();
         this.width = this.getSVGWidth();
+    },
+    beforeDestroy() {
+        window.removeEventListener('resize', this.onResize);
     }
 }
 

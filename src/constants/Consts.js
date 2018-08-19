@@ -4,6 +4,7 @@ export default {
     D: "d",
     R: "r",
     CLASS: "class",
+    DIV: "div",
     TEXT: "text",
     FILL: "fill",
     X: "x",

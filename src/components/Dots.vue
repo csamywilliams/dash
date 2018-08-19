@@ -9,6 +9,7 @@ import Consts from "../constants/Consts";
 import Dimensions from "../mixins/Dimensions";
 import Transition from "../animation/Transition";
 import Scale from "../drawing/Scale";
+import Tooltip from "../animation/Tooltip";
 
 export default {
   name: 'Dots',
@@ -24,13 +25,12 @@ export default {
     return {
       model: {},
       Scale: "",
+      dots: {}
     }
   },
   computed: {
-      computedClass: function() {
-        let className = `c-chart__dots c-chart__dots--${this.model.id}`;
-
-        return className;
+      computedClass() {
+        return `c-chart__axis c-chart__axis-${this.axis}--${this.model.id}`;
       },
   },
   methods: {
@@ -50,7 +50,7 @@ export default {
 
         const chart = this.chart;
 
-        const circles = d3.select(parentCls).selectAll(`.${clsName}`)
+        let dots = d3.select(parentCls).selectAll(`.${clsName}`)
                 .data(chart.dataset)
                 .enter()
                 .append(Consts.CIRCLE)
@@ -62,6 +62,11 @@ export default {
                     return yScale(d[chart.yKey]) 
                 })
                 .attr(Consts.R, this.circleRadius());
+
+        if(this.chart.config.tooltips) {
+            dots = new Tooltip(this.chart).draw(dots);
+        }
+
     },
 
     circleRadius(obj) {
