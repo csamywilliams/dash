@@ -2,6 +2,7 @@
   <div :class="computedClass">
     <svg :class="computedSVGClass">
       <g :class="computedGClass">
+        <Gridlines :chart="model" :chartId="model.id" />
         <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
         <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
         <LinePath :chart="model" :chartId="model.id" />
@@ -17,10 +18,10 @@
 import Axis from "../components/Axis";
 import LinePath from "../components/LinePath";
 import AxisText from "../text/AxisText";
+import Gridlines from "../components/Gridlines";
 import Consts from "../constants/Consts";
 import { parseTime } from "../utilities/Utilities";
 import Chart from "../drawing/Chart";
-import Gridlines from "../drawing/Gridlines";
 import Circle from "../shapes/Circle";
 
 export default {
@@ -32,6 +33,7 @@ export default {
     Axis,
     AxisText,
     LinePath,
+    Gridlines
   },
   data: function() {
     return {
@@ -117,11 +119,6 @@ export default {
 
     },
 
-    createGridlines() {
-        const gridlines = new Gridlines(this.chart);
-        gridlines.addMultiGridLines(this.chart.config.gridline);
-    },
-
     createDots() {
         const dots = new Circle(this.chart, this.model.dataset);
         dots.draw();
@@ -182,5 +179,12 @@ export default {
     pointer-events: none;	
 }
 
-
+.c-chart__gridlines line {
+    stroke: lightgrey;
+    stroke-opacity: 0.6;
+    shape-rendering: crispEdges
+}
+.c-chart__gridlines path {
+    stroke-width: 0;
+}
 </style>

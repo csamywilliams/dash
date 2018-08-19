@@ -39,7 +39,7 @@ class Gridlines {
 
     addXGridLine() {
         this.chart.g.selectAll(`.${this.classNameX}`)
-            .attr("transform", "translate(0," + this.height + ")")
+            .attr("transform", "translate(0," + this.height + this.chart.margin.bottom + ")")
             .call(d3.axisBottom(this.xScale)
                     .tickSize(-this.height)
                     .tickFormat(""));

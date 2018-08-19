@@ -35,9 +35,6 @@ const Dimensions = {
             this.containerWidth = this.getChartWidth();
             this.height = this.getSVGHeight();
             this.width = this.getSVGWidth();
-
-            console.log(this.height);
-            console.log(this.width);
         }
     
     },

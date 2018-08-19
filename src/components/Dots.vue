@@ -12,7 +12,7 @@ import Scale from "../drawing/Scale";
 import Tooltip from "../animation/Tooltip";
 
 export default {
-  name: 'Dots',
+  name: 'Gridlines',
   mixins: [Dimensions],
   props: {
     chart: Object,
