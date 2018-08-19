@@ -61,10 +61,18 @@ export default {
                 .attr(Consts.CY, function(d) { 
                     return yScale(d[chart.yKey]) 
                 })
-                .attr(Consts.R, 5);
+                .attr(Consts.R, this.circleRadius());
     },
 
- 
+    circleRadius(obj) {
+
+        if(this.chart.config.hasOwnProperty("radius")) {
+            return this.chart.config.radius;
+        }
+
+        return Consts.DOT_RADIUS;
+    },
+
     getModel() {
 
         const temp = Object.assign(this.chart, {
