@@ -14,14 +14,10 @@ export default {
   mixins: [Dimensions],
   props: {
     chart: Object,
-    chartId: {
-        type: Number,
-        required: true
-    }
   },
   data: function() {
     return {
-      model: {},
+      model: this.chart,
       Scale: "",
     }
   },
@@ -34,7 +30,6 @@ export default {
 
     setModel() {
         this.model = this.chart;
-        this.chartId = this.chartId;
     },
   
     addMultiGridLines(multi = true) {

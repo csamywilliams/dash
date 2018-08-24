@@ -1,13 +1,13 @@
 <template>
   <div :class="computedClass">
-    <svg :class="computedSVGClass">
-      <g :class="computedGClass">
-        <Gridlines :chart="model" :chartId="model.id" />
-        <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
-        <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
-        <LinePath :chart="model" :chartId="model.id" />
+    <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
+      <g :class="computedGClass" >
+        <Gridlines :chart="chartData"/> 
+        <!-- <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
+        <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
+        <!-- <LinePath :chart="model" :chartId="model.id" />
         <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
-        <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/>
+        <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
       </g>
     </svg> 
   </div>
@@ -37,23 +37,11 @@ export default {
   },
   data: function() {
     return {
-      model: {
-        id: this.chartData.id,
-        container: "",
-        xKey: "",
-        yKey: "",
-        labelX: "",
-        labelY: "",
-        config: {
-          curve:"",
-          radius: "",
-          tooltips: "",
-          gridlines: ""
-        },
-        data: "",
-        margin: "",
-      },
-      chart: {}
+      chart: this.chartData,
+      parsedData: [],
+      svg: {},
+      w: 400,
+      h: 400
     }
   },
   computed: {
@@ -65,51 +53,45 @@ export default {
     },
     computedGClass() {
         return `c-chart__g c-chart__g--${this.chartData.id}`;
+    },
+    computeViewBox() {
+      return `0 0 ${this.w} ${this.h}`;
+    },
+    computeWidth() {
+      return this.w;
+    },
+    computeHeight() {
+      return this.h;
     }
   },
   methods: {
-    setModel() {
-      this.model.id = this.chartData.id;
-      this.model.container = this.computedClass;
-      this.model.xKey = (this.chartData.axis.x).toLowerCase();
-      this.model.yKey = (this.chartData.axis.y).toLowerCase();
-      this.model.labelX = this.chartData.axis.labelX;
-      this.model.labelY = this.chartData.axis.labelY;
-      this.model.config = {
-        curve: this.chartData.settings.curve,
-        radius: this.chartData.settings.radius,
-        tooltips: this.chartData.settings.tooltips,
-        gridline: this.chartData.settings.gridlines
-      };
-      this.model.data = this.chartData.data;
-      this.model.margin = {top: 20, right: 60, bottom: 50, left: 80};
-      this.model.translateX = this.model.margin.left,
-      this.model.translateY = this.model.margin.top
-    },
-    createDataset(model) {
+    createDataset() {
       const formatTime = parseTime(Consts.DATE_DMY);
+      const xKey = this.chartData.axis.x;
+      const yKey = this.chartData.axis.y;
 
-      const dataset = this.model.data.map((val) => {
+      this.chart.parsedData = this.chartData.data.map((val) => {
 
           let item = {};
-          item[this.model.xKey] = formatTime(val[this.model.xKey]),
-          item[this.model.yKey] = val[this.model.yKey]
+          item[xKey] = formatTime(val[xKey]),
+          item[yKey] = val[yKey]
           
           return item;
       });
 
-      this.model.dataset = dataset;
     },
+
     createChart() {
 
-      const lineChart = new Chart(this.model);
-      this.chart = lineChart.initialise();
 
-      if(this.chart.svg instanceof Error) {
-        return;
-      }
+      // const lineChart = new Chart(this.chartData);
+      // this.chart = lineChart.initialise();
 
-      this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
+      // if(this.chart.svg instanceof Error) {
+      //   return;
+      // }
+
+      // this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
 
       // this.createGridlines();
  
@@ -118,15 +100,10 @@ export default {
       // this.resize();
 
     },
-
-    createDots() {
-        const dots = new Circle(this.chart, this.model.dataset);
-        dots.draw();
-    }, 
   },
   mounted: function() { 
 
-    this.setModel();
+    // this.setchartData();
 
     this.createDataset();
   },
