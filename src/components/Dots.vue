@@ -6,64 +6,63 @@
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Dimensions from "../mixins/Dimensions";
 import Transition from "../animation/Transition";
 import Scale from "../drawing/Scale";
 import Tooltip from "../animation/Tooltip";
+import { lineScale } from "../utilities/LineScale";
 
 export default {
   name: 'Gridlines',
-  mixins: [Dimensions],
   props: {
-    chart: Object,
-    chartId: {
-        type: Number,
-        required: true
-    }
+    chartData: Object,
+    w: Number,
+    h: Number
   },
   data: function() {
     return {
-      model: {},
-      Scale: "",
-      dots: {}
+      chart: this.chartData,
+      scales: "",
+      dots: {},
+      width: this.w,
+      height: this.h
     }
   },
   computed: {
       computedClass() {
-        return `c-chart__axis c-chart__axis-${this.axis}--${this.model.id}`;
+        return `c-chart__axis c-chart__axis-${this.axis}--${this.chart.id}`;
       },
   },
   methods: {
 
-    setModel() {
-        this.model = this.chart;
-        this.chartId = this.chartId;
-    },
-  
     createDots() {
 
-        const clsName = `c-chart__dots--${this.model.id}`;
-        const parentCls = `.c-chart__linedots--${this.model.id}`;
+        const clsName = `c-chart__dots--${this.chart.id}`;
+        const parentCls = `.c-chart__linedots--${this.chart.id}`;
 
-        const xScale = this.Scale.createXScale(this.getModel());
-        const yScale = this.Scale.createYScale(this.getModel());
+        const xKey = this.chart.axis.x;
+        const yKey = this.chart.axis.y;
+        const xScale = this.scales.xScale;
+        const yScale = this.scales.yScale;
+        const dataset = this.chart.parsedData;
 
-        const chart = this.chart;
 
-        let dots = d3.select(parentCls).selectAll(`.${clsName}`)
-                .data(chart.dataset)
+        let dots = d3.select(parentCls)
+                .selectAll(`.${clsName}`)
+                .data(dataset)
                 .enter()
                 .append(Consts.CIRCLE)
-                .attr(Consts.CLASS, clsName)
-                .attr(Consts.CX, function(d) {
-                    return xScale(d[chart.xKey]) 
+                .attr(Consts.CLASS, clsName);
+
+        dots.attr(Consts.CX, function(d) {
+                    console.log(d[xKey]);
+                    return xScale(d[xKey]) 
                 })
                 .attr(Consts.CY, function(d) { 
-                    return yScale(d[chart.yKey]) 
+                    return yScale(d[yKey]) 
                 })
                 .attr(Consts.R, this.circleRadius());
 
-        if(this.chart.config.tooltips) {
+        if(this.chart.settings.tooltips) {
             dots = new Tooltip(this.chart).draw(dots);
         }
 
@@ -71,40 +70,22 @@ export default {
 
     circleRadius(obj) {
 
-        if(this.chart.config.hasOwnProperty("radius")) {
-            return this.chart.config.radius;
-        }
+            if(this.chart.settings.hasOwnProperty("radius")) {
+                return this.chart.settings.radius;
+            }
 
-        return Consts.DOT_RADIUS;
+            return Consts.DOT_RADIUS;
     },
 
-    getModel() {
+},
+mounted() {
+    this.scales = lineScale(this.chart, this.width, this.height);
+},
+updated() {
 
-        const temp = Object.assign(this.chart, {
-            width: this.width,
-            height: this.height
-        })
-
-        return temp;
-    },
-
-    resize() {
-       window.addEventListener('resize', () => {
-          
-      });
-
-    }
-  },
-  mounted() {
-
-    this.setModel();
-
-  },
-  updated() { 
-    this.Scale = new Scale(this.model);
     this.createDots();
 
-  }
+},
 }
 </script>
 

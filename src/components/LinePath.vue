@@ -1,7 +1,7 @@
 <template>
     <g :class="computedGClass">
         <path :class="computedClass"></path>
-        <Dots :chart="chart" :chartId="chart.id" />
+        <!-- <Dots :chartData="chart" :w="w" :h="h" /> -->
     </g>
 </template>
 
@@ -11,60 +11,54 @@ import Dots from "./Dots";
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Dimensions from "../mixins/Dimensions";
 import Transition from "../animation/Transition";
 import Scale from "../drawing/Scale";
+import { lineScale } from "../utilities/LineScale";
 
 export default {
   name: 'LinePath',
-  mixins: [Dimensions],
   components: { Dots },
   props: {
-    chart: Object,
-    chartId: {
-        type: Number,
-        required: true
-    }
+    chartData: Object,
+    w: Number,
+    h: Number
   },
   data: function() {
     return {
-      model: {},
-      Scale: "",
+      chart: this.chartData,
+      scales: "",
+      width: this.w,
+      height: this.h
     }
   },
   computed: {
     computedClass: function() {
-        return `c-chart__line c-chart__line--${this.model.id}`;
+        return `c-chart__line c-chart__line--${this.chart.id}`;
     },
     computedGClass: function() {
-        return `c-chart__linedots c-chart__linedots--${this.model.id}`;
+        return `c-chart__linedots c-chart__linedots--${this.chart.id}`;
     },
   },
   methods: {
-
-    setModel() {
-        this.model = this.chart;
-        this.chartId = this.chartId;
-    },
   
     createLine() {
 
-        const path = `.c-chart__line--${this.model.id}`;
+        const path = `.c-chart__line--${this.chart.id}`;
 
         d3.select(path)
-            .datum(this.model.dataset)
+            .datum(this.chart.parsedData)
             .attr(Consts.D, this.applyPath())
             .call(Transition);
     },
 
     applyPath() {
-        const xKey = this.model.xKey;
-        const yKey = this.model.yKey;
+        const xKey = this.chart.axis.x;
+        const yKey = this.chart.axis.y;
 
-        const xScale = this.Scale.createXScale(this.getLineModel());
-        const yScale = this.Scale.createYScale(this.getLineModel());
+        const xScale = this.scales.xScale;
+        const yScale = this.scales.yScale;
 
-        let line =  d3.line()
+        let line = d3.line()
                     .x(function (d) {
                         return xScale(d[xKey]); 
                     })
@@ -78,43 +72,20 @@ export default {
     },
 
     addCurve(line) {
-  
-        if(this.model.config.hasOwnProperty("curve") && this.model.config.curve === true) {
-            return line.curve(d3.curveMonotoneX);
-        }
-
-        return line;
-    },
     
-    getLineModel() {
+            if(this.chart.settings.hasOwnProperty("curve") && this.chart.settings.curve === true) {
+                return line.curve(d3.curveMonotoneX);
+            }
 
-        const temp = Object.assign(this.chart, {
-            width: this.width,
-            height: this.height
-        })
-
-        return temp;
+            return line;
+        },
+        
     },
+    mounted() {
+            this.scales = lineScale(this.chart, this.width, this.height);
+            this.createLine();
 
-    resize() {
-       window.addEventListener('resize', () => {
-          
-           this.createLine();
-
-      });
-
-    }
-  },
-  mounted() {
-
-    this.setModel();
-
-  },
-  updated() { 
-    this.Scale = new Scale(this.model);
-    this.createLine();
-
-  }
+    },
 }
 </script>
 

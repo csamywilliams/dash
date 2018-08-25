@@ -5,8 +5,8 @@
         <!-- <Gridlines :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>  -->
         <Axis :chartData="chart" axis="x" :w="computeInnerWidth" :h="computeInnerHeight"/>
         <Axis :chartData="chart" axis="y" :w="computeInnerWidth" :h="computeInnerHeight"/> 
-        <!-- <LinePath :chart="model" :chartId="model.id" />
-        <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
+        <LinePath :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>
+       <!-- <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
         <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
       </g>
     </svg> 
