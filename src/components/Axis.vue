@@ -8,97 +8,67 @@ import * as d3 from "d3";
 import Consts from "../constants/Consts";
 import Dimensions from "../mixins/Dimensions";
 import Scale from "../drawing/Scale";
+import { lineScale } from "../utilities/LineScale";
 
 export default {
   name: 'Axis',
-  mixins: [Dimensions],
   props: {
-    chart: Object,
+    chartData: Object,
     axis: {
         type: String,
         required: true
     },
-    chartId: {
-        type: Number,
-        required: true
-    }
+    w: Number,
+    h: Number
   },
   data: function() {
     return {
-      model: {},
-      axisModel: {},
-      xScale: "",
-      yScale: "",
-      Scale: "",
+      chart: this.chartData,
+      scales: "",
+      width: this.w,
+      height: this.h,
+      left: 40,
     }
   },
   computed: {
       computedClass() {
-        return `c-chart__axis c-chart__axis-${this.axis}--${this.model.id}`;
+        return `c-chart__axis c-chart__axis-${this.axis}--${this.chart.id}`;
       },
   },
   methods: {
 
-    setModel() {
-        this.model = this.chart;
-        this.chartId = this.chartId;
-    },
-  
     createAxis() {
 
         if(this.axis === Consts.X) {
-            this.createXAxis();
+            this.xAxis(this.scales.xScale);
         } else if (this.axis === Consts.Y) {
-            this.createYAxis();
+            this.yAxis(this.scales.yScale);
         }
     },
 
-    createXAxis() {
-
-        this.xScale = this.Scale.createXScale(this.getAxisModel());
-
-        this.updateXAxis(this.xScale);
-    },
-
-    createYAxis() {
-        this.yScale = this.Scale.createYScale(this.getAxisModel());
-
-        this.updateYAxis(this.yScale);
-    },
-
-    updateXAxis(xScale) {
+    xAxis(xScale) {
         
-        const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
+        const scaleG = `.c-chart__axis-${this.axis}--${this.chart.id}`;
 
         d3.select(scaleG)
-            .attr("transform", "translate(0," + this.height + ")")
+            .attr("transform", `translate(0, ${this.h})`)
             .call(d3.axisBottom(xScale)
             .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
 
     },
 
-    updateYAxis(yScale) {
+    yAxis(yScale) {
         
-        const scaleG = `.c-chart__axis-${this.axis}--${this.model.id}`;
+        const scaleG = `.c-chart__axis-${this.axis}--${this.chart.id}`;
 
         d3.select(scaleG)
             .call(d3.axisLeft(yScale));
 
     },
-
-    getAxisModel() {
-
-        const temp = Object.assign(this.chart, {
-            width: this.width,
-            height: this.height
-        })
-
-        return temp;
-    },
   },
   mounted() {
-    this.setModel();
-    this.Scale = new Scale(this.chart);
+      this.scales = lineScale(this.chart, this.width, this.height);
+      this.createAxis();
   },
   updated() { 
     

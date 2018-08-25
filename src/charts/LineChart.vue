@@ -1,10 +1,10 @@
 <template>
   <div :class="computedClass">
     <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
-      <g :class="computedGClass" >
-        <Gridlines :chart="chartData"/> 
-        <!-- <Axis :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
-        <Axis :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
+      <g :class="computedGClass" :transform="computeTransform" >
+        <!-- <Gridlines :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>  -->
+        <Axis :chartData="chart" axis="x" :w="computeInnerWidth" :h="computeInnerHeight"/>
+        <Axis :chartData="chart" axis="y" :w="computeInnerWidth" :h="computeInnerHeight"/> 
         <!-- <LinePath :chart="model" :chartId="model.id" />
         <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
         <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
@@ -40,8 +40,14 @@ export default {
       chart: this.chartData,
       parsedData: [],
       svg: {},
-      w: 400,
-      h: 400
+      w: 800,
+      h: 400,
+      margin: {
+        top: 20, 
+        right: 60, 
+        bottom: 50, 
+        left: 80
+      },
     }
   },
   computed: {
@@ -62,6 +68,15 @@ export default {
     },
     computeHeight() {
       return this.h;
+    },
+    computeInnerWidth() {
+      return this.w - this.margin.left - this.margin.right;
+    },
+    computeInnerHeight() {
+      return this.h - this.margin.top - this.margin.bottom;
+    },
+    computeTransform() {
+      return `translate(${this.margin.left}, ${this.margin.top})`;
     }
   },
   methods: {
@@ -102,8 +117,6 @@ export default {
     },
   },
   mounted: function() { 
-
-    // this.setchartData();
 
     this.createDataset();
   },

@@ -19,5 +19,6 @@ export default {
     WIDTH: "width",
     HEIGHT: "height",
     DATE_DMY: "%d-%b-%y",
+    DATE: "date",
     DOT_RADIUS: 5
 }
