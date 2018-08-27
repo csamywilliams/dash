@@ -1,8 +1,8 @@
 <template>
   <div id="app">
     <LineChart :chartData="lineChart1" />
-    <!-- <PieChart :pieData="pieData1" />
-    <LineChart :chartData="lineChart2" /> -->
+    <PieChart :chartData="pieData1" />
+    <!-- <LineChart :chartData="lineChart2" />  -->
   </div>
 </template>
 
@@ -10,7 +10,7 @@
 
 
 import LineChart from './charts/LineChart.vue';
-import PieChart from './components/PieChart.vue';
+import PieChart from './charts/PieChart.vue';
 
 const lineChart1 = {
   id: 1,
@@ -63,13 +63,16 @@ const lineChart2 = {
 }
 
 const pieData1 = {
-  containerName: "piechart",
+  id: 2,
   data: [
     { type: "Session complete", sessions: 50 },
     { type: "Session abandoned", sessions: 20 },
     { type: "Session return", sessions: 30 }
   ],
-  key: "sessions"
+  axis: {
+    key: "type",
+    amount: "sessions"
+  },
 }
 
 export default {

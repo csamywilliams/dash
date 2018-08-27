@@ -67,11 +67,6 @@ export default {
   mounted() {
       this.scales = lineScale(this.chart, this.width, this.height);
       this.createAxis();
-  },
-  updated() { 
-    
-    this.createAxis();
-
   }
 }
 </script>
