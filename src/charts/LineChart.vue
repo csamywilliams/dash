@@ -2,12 +2,12 @@
   <div :class="computedClass">
     <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
       <g :class="computedGClass" :transform="computeTransform" >
-        <!-- <Gridlines :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>  -->
+        <Gridlines :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>
         <Axis :chartData="chart" axis="x" :w="computeInnerWidth" :h="computeInnerHeight"/>
         <Axis :chartData="chart" axis="y" :w="computeInnerWidth" :h="computeInnerHeight"/> 
         <LinePath :chartData="chart" :w="computeInnerWidth" :h="computeInnerHeight"/>
-       <!-- <AxisText :chart="model" axis="x" :chartId="model.id" :chartMargin="model.margin"/>
-        <AxisText :chart="model" axis="y" :chartId="model.id" :chartMargin="model.margin"/> -->
+        <AxisText :chartData="chart" axis="x" :w="computeInnerWidth" :h="computeInnerHeight" />
+        <AxisText :chartData="chart" axis="y" :w="computeInnerWidth" :h="computeInnerHeight" />
       </g>
     </svg> 
   </div>
@@ -16,13 +16,11 @@
 <script>
 
 import Axis from "../components/Axis";
-import LinePath from "../components/LinePath";
 import AxisText from "../text/AxisText";
-import Gridlines from "../components/Gridlines";
 import Consts from "../constants/Consts";
+import Gridlines from "../components/Gridlines";
+import LinePath from "../components/LinePath";
 import { parseTime } from "../utilities/Utilities";
-import Chart from "../drawing/Chart";
-import Circle from "../shapes/Circle";
 
 export default {
   name: 'LineChart',

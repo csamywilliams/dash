@@ -6,99 +6,72 @@
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Dimensions from "../mixins/Dimensions";
-import Scale from "../drawing/Scale";
-import Transform from "../drawing/Transform";
 
 export default {
-  name: 'AxisText',
-  mixins: [Dimensions],
-  props: {
-    chart: Object,
-    axis: {
-        type: String,
-        required: true
+    name: 'AxisText',
+    props: {
+        chartData: Object,
+        axis: {
+            type: String,
+            required: true
+        },
+        w: Number,
+        h: Number,
     },
-    chartId: {
-        type: Number,
-        required: true
-    }
-  },
-  data: function() {
-    return {
-      model: {},
-    }
-  },
-  computed: {
-      computedClass: function() {
-        let className = `c-chart__axistext c-chart__axistext-${this.axis}--${this.model.id}`;
-
-        return className;
-      },
-  },
-  methods: {
-
-    setModel: function() {
-        this.model = this.chart;
-        this.chartId = this.chartId;
-    },
-
-    createAxisText: function() {
-
-        if(this.axis === Consts.X) {
-            this.drawX();
-        } else if (this.axis === Consts.Y) {
-            this.drawY();
+    data: function() {
+        return {
+            chart: this.chartData,
+            width: this.w,
+            height: this.h,
+            margin: {
+                top: 20, 
+                right: 60, 
+                bottom: 50, 
+                left: 80
+            },
         }
     },
-  
-    drawX() {
-
-        const w = this.width / 2;
-        const h = this.height + this.chart.margin.bottom - 10;
-
-        const translate = new Transform().translate((this.chart.width / 2), (this.chart.height + this.chart.margin.bottom + 20));
-       
-        d3.select(`.c-chart__axistext-${this.axis}--${this.model.id}`)
-            .attr("transform", `translate(${w}, ${h})`)
-            .style("text-anchor", "middle")
-            .text(this.chart.labelX);
-    },
-
-    drawY() {
-
-        d3.select(`.c-chart__axistext-${this.axis}--${this.model.id}`)
-            .attr("transform", "rotate(-90)")
-            .attr("y", 0 - this.chart.margin.right)
-            .attr("x", 0 - (this.height / 2))
-            .attr("dy", "1em")
-            .style("text-anchor", "middle")
-            .text(this.chart.labelY);
-    },
-
-    onResize: function() {
-
-        const w = this.width / 2;
-        const h = this.height + this.chart.margin.bottom - 10;
-
-        d3.select(`.c-chart__axistext-x--${this.model.id}`)
-            .attr("transform", `translate(${w}, ${h})`);
-
-        d3.select(`.c-chart__axistext-${this.axis}-y--${this.model.id}`)
-            .attr("y", 0 - this.chart.margin.right)
-            .attr("x", 0 - (this.height / 2))
+    computed: {
+        computedClass: function() {
+            return `c-chart__axistext c-chart__axistext-${this.axis}--${this.chart.id}`;
         },
     },
-    mounted: function() {
-        this.setModel();
+    methods: {
 
-        window.addEventListener('resize', this.onResize);
+        createAxisText: function() {
+            if(this.axis === Consts.X) {
+                this.drawX();
+            } else if (this.axis === Consts.Y) {
+                this.drawY();
+            }
+        },
+  
+        drawX() {
+
+            const w = this.width / 2;
+            const h = this.height + this.margin.bottom - 10;
+
+            // const translate = new Transform().translate((this.width / 2), (this.height + this.margin.bottom + 20));
+        
+            d3.select(`.c-chart__axistext-${this.axis}--${this.chart.id}`)
+                .attr("transform", `translate(${w}, ${h})`)
+                .style("text-anchor", "middle")
+                .text(this.chart.axis.labelX);
+        },
+
+        drawY() {
+
+            d3.select(`.c-chart__axistext-${this.axis}--${this.chart.id}`)
+                .attr("transform", "rotate(-90)")
+                .attr("y", 0 - this.margin.right)
+                .attr("x", 0 - (this.height / 2))
+                .attr("dy", "1em")
+                .style("text-anchor", "middle")
+                .text(this.chart.axis.labelY);
+        },
     },
-    updated: function() { 
+    mounted() {
         this.createAxisText();
     },
-    beforeDestroy() {
-        window.removeEventListener('resize', this.onResize);
-    }
 }
 </script>

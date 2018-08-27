@@ -59,9 +59,10 @@ export default {
         const className = `c-chart__gridlines-x--${this.chart.id}`;
 
         d3.selectAll(`.${className}`)
-            .attr("transform", `translate(${this.left}, ${this.height})`)
+            .attr("transform", `translate(0, ${this.height})`)
             .call(d3.axisBottom(this.scales.xScale)
-                    .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
+                    .tickSize(-this.height)
+                    .tickFormat(""));
     },
  
     addYGridLine() {

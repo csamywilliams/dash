@@ -1,6 +1,4 @@
 import * as d3 from "d3";
-import Consts from "../constants/Consts";
-import { parseTime } from "../utilities/Utilities";
 import { maxDateScale, minDateScale } from "../utilities/Date";
 import { max } from "../utilities/MinMax";
 

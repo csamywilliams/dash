@@ -10,7 +10,6 @@
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
 import Transition from "../animation/Transition";
-import Scale from "../drawing/Scale";
 import { lineScale } from "../utilities/LineScale";
 import Dots from "./Dots";
 

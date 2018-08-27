@@ -35,7 +35,7 @@ const lineChart1 = {
   settings: {
     tooltips: true,
     curve: true,
-    gridlines: "x",
+    gridlines: false,
     radius: 5
   }
 }
