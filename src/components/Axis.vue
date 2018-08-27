@@ -6,8 +6,6 @@
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Dimensions from "../mixins/Dimensions";
-import Scale from "../drawing/Scale";
 import { lineScale } from "../utilities/LineScale";
 
 export default {
