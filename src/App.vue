@@ -3,6 +3,7 @@
     <LineChart :chartData="lineChart1" />
     <PieChart :chartData="pieData1" />
     <!-- <LineChart :chartData="lineChart2" />  -->
+    <BarChart :chartData="barData1" />
   </div>
 </template>
 
@@ -11,6 +12,7 @@
 
 import LineChart from './charts/LineChart.vue';
 import PieChart from './charts/PieChart.vue';
+import BarChart from './charts/BarChart.vue';
 
 const lineChart1 = {
   id: 1,
@@ -60,7 +62,7 @@ const lineChart2 = {
     curve: false,
     gridlines: false
   }
-}
+};
 
 const pieData1 = {
   id: 2,
@@ -73,19 +75,34 @@ const pieData1 = {
     key: "type",
     amount: "sessions"
   },
+};
+
+const barData1 = {
+  id: 3,
+  data: [
+    { type: "Session complete", sessions: 50 },
+    { type: "Session abandoned", sessions: 20 },
+    { type: "Session return", sessions: 30 }
+  ],
+  axis: {
+    x: "type",
+    y: "sessions"
+  },
 }
 
 export default {
   name: 'app',
   components: {
     LineChart,
-    PieChart
+    PieChart,
+    BarChart
   },
   data() {
     return {
       lineChart1,
       lineChart2,
-      pieData1
+      pieData1,
+      barData1,
     }
   }
 }

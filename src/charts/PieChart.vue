@@ -10,9 +10,7 @@
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Chart from "../drawing/Chart";
 import Legend from "../drawing/Legend";
-import ArcText from "../text/ArcText";
 
 export default {
     name: 'PieChart',
@@ -73,16 +71,11 @@ export default {
 
         const cls = `c-chart__arc c-chart__arc--${this.chartData.id} c-chart__slice c-chart__slice`;
         
-        const arc = d3.arc()
-                      .outerRadius(this.radius() - 10)
-                      .innerRadius(0);
-
         const pieAmount = this.chart.axis.amount;
 
         const pie = d3.pie()
                         .sort(null)
                         .value(function (d) { 
-                            console.log(d[pieAmount])
                             return d[pieAmount]
                         });
 
