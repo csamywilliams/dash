@@ -96,33 +96,10 @@ export default {
 
     },
 
-    createChart() {
-
-
-      // const lineChart = new Chart(this.chartData);
-      // this.chart = lineChart.initialise();
-
-      // if(this.chart.svg instanceof Error) {
-      //   return;
-      // }
-
-      // this.chart.g = lineChart.setGroup(this.chart.margin.left, this.chart.margin.top);
-
-      // this.createGridlines();
- 
-      // this.createDots();
-
-      // this.resize();
-
-    },
   },
-  mounted: function() { 
-
+  beforeMount: function() {
     this.createDataset();
   },
-  updated() {
-    this.createChart();
-  }
 }
 </script>
 

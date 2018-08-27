@@ -1,19 +1,18 @@
 <template>
     <g :class="computedGClass">
         <path :class="computedClass"></path>
-        <!-- <Dots :chartData="chart" :w="w" :h="h" /> -->
+        <Dots :chartData="chart" :w="w" :h="h" />
     </g>
 </template>
 
 <script>
-
-import Dots from "./Dots";
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
 import Transition from "../animation/Transition";
 import Scale from "../drawing/Scale";
 import { lineScale } from "../utilities/LineScale";
+import Dots from "./Dots";
 
 export default {
   name: 'LinePath',
