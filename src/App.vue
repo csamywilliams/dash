@@ -38,7 +38,8 @@ const lineChart1 = {
     tooltips: true,
     curve: true,
     gridlines: false,
-    radius: 5
+    radius: 5,
+    gradient: true
   }
 }
 
@@ -82,7 +83,7 @@ const barData1 = {
   data: [
     { type: "Session complete", sessions: 50 },
     { type: "Session abandoned", sessions: 20 },
-    { type: "Session return", sessions: 30 }
+    { type: "Session return", sessions: 30 },
   ],
   axis: {
     x: "type",

@@ -120,7 +120,7 @@ export default {
         const labelArc = d3.arc()
                         .outerRadius(this.radius() - 30)
                         .innerRadius(this.radius() - 175);
-
+                        
         const cls = `c-chart__arc-text--${this.chartData.id}`;
 
         this.g.append("text")

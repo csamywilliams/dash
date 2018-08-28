@@ -63,6 +63,7 @@ export default {
                     .attr(Consts.R, this.circleRadius());
 
             if(this.chart.settings.tooltips) {
+   
                 dots = new Tooltip(this.chart).draw(dots);
             }
 

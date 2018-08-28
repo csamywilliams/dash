@@ -31,7 +31,7 @@ export default {
     Axis,
     AxisText,
     LinePath,
-    Gridlines
+    Gridlines,
   },
   data: function() {
     return {
@@ -46,6 +46,7 @@ export default {
         bottom: 50, 
         left: 80
       },
+      gradient: this.chartData.settings.gradient
     }
   },
   computed: {
@@ -131,7 +132,7 @@ export default {
     stroke: #fff;
 }
 
-.c-chart__tooltip {
+.c-chart__tooltip--1 {
     position: absolute;			
     text-align: center;			
     width: 60px;					

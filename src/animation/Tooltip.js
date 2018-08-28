@@ -24,13 +24,15 @@ class Tooltip {
     draw(circles) {
 
         const chart = this.chart;
+        const xKey = this.chart.axis.x;
+        const yKey = this.chart.axis.y;
         let tooltipDiv = this.create();
 
-        const dots = circles.on("mouseover", function (d) {
+        circles.on("mouseover", function (d) {
             tooltipDiv.transition()
                 .duration(200)
                 .style("opacity", .9);
-            tooltipDiv.html(`Sessions: ${d[chart.yKey]}`)
+            tooltipDiv.html(`Sessions: ${d[yKey]}`)
                 .style("left", `${(d3.event.pageX)}px`)
                 .style("top",`${(d3.event.pageY - 28)}px`);
         })
@@ -40,7 +42,7 @@ class Tooltip {
                 .style("opacity", 0);
         });
 
-        return dots;
+        return circles;
 
     }
 
