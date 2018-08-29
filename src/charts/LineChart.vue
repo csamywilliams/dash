@@ -25,7 +25,11 @@ import { parseTime } from "../utilities/Utilities";
 export default {
   name: 'LineChart',
   props: {
-    chartData: Object
+    chartData: Object,
+    id: {
+      type: Number,
+      required: true
+    }
   },
   components: {
     Axis,
@@ -45,19 +49,18 @@ export default {
         right: 60, 
         bottom: 50, 
         left: 80
-      },
-      gradient: this.chartData.settings.gradient
+      }
     }
   },
   computed: {
     computedClass() {
-        return `c-chart__container c-chart__container--${this.chartData.id}`;
+        return `c-chart__container c-chart__container--${this.id}`;
     },
     computedSVGClass() {
-        return `c-chart__svg c-chart__svg--${this.chartData.id}`;
+        return `c-chart__svg c-chart__svg--${this.id}`;
     },
     computedGClass() {
-        return `c-chart__g c-chart__g--${this.chartData.id}`;
+        return `c-chart__g c-chart__g--${this.id}`;
     },
     computeViewBox() {
       return `0 0 ${this.w} ${this.h}`;

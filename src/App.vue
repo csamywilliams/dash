@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <LineChart :chartData="lineChart1" />
-    <PieChart :chartData="pieData1" />
+    <LineChart :id="lineChart1.id" :chartData="lineChart1" />
+    <PieChart :id="pieData1.id" :chartData="pieData1" />
     <!-- <LineChart :chartData="lineChart2" />  -->
     <BarChart :chartData="barData1" />
   </div>
@@ -39,11 +39,12 @@ const lineChart1 = {
     curve: true,
     gridlines: false,
     radius: 5,
-    gradient: true
+    fill: true
   }
 }
 
 const lineChart2 = {
+  id: 4,
   data: [
           { date: "1-May-12", sessions: 25 },
           { date: "2-May-12", sessions: 31 },
@@ -52,7 +53,6 @@ const lineChart2 = {
           { date: "5-May-12", sessions: 35 },
 
   ],
-  containerName: "linechart2",
   axis: {
     x: "date",
     y: "sessions",

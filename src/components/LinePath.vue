@@ -28,7 +28,7 @@ export default {
       scales: "",
       width: this.w,
       height: this.h,
-      gradient: this.chartData.settings.gradient
+      fill: this.chartData.settings.fill
     }
   },
   computed: {
@@ -117,7 +117,7 @@ export default {
         this.scales = lineScale(this.chart, this.width, this.height);
         this.createLine();
 
-        if(this.gradient === true) {
+        if(this.fill === true) {
             this.addArea();
         }
 
