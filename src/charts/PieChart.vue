@@ -86,7 +86,7 @@ export default {
               .enter().append(Consts.G)
               .attr(Consts.CLASS, function(d) { 
                 return `${cls}--${d.index}`;
-            }); 
+              }); 
 
           this.createPath();
           this.createText();
@@ -102,7 +102,7 @@ export default {
   
         const cls = `c-chart__arc-path--${this.id}`;
 
-        this.g.append("path")
+        this.g.append(Consts.PATH)
           .attr(Consts.D, arc)
           .attr(Consts.CLASS, function(d) { 
               return `c-chart__arc-path ${cls} c-chart__pie-path c-chart__pie-path--${d.index}`;
@@ -126,7 +126,7 @@ export default {
                         
         const cls = `c-chart__arc-text--${this.id}`;
 
-        this.g.append("text")
+        this.g.append(Consts.TEXT)
             .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
             .attr("dy", ".35em")
             .attr(Consts.CLASS, function(d) { 
@@ -143,23 +143,6 @@ export default {
 
 <style>
 
-.c-chart__container {
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-}
-
-.c-chart__slice--0, .c-legend__rect--0 {
-    fill: #c8feff;
-}
-
-.c-chart__slice--1, .c-legend__rect--1 {
-    fill: #99cc66;
-}
-
-.c-chart__slice--2, .c-legend__rect--2 {
-    fill: #c0c5ff;
-}
 
 .c-chart__arc-text {
     fill: black;

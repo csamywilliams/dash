@@ -25,7 +25,10 @@ import { parseTime } from "../utilities/Utilities";
 export default {
   name: 'LineChart',
   props: {
-    chartData: Object,
+    chartData: {
+      type: Object,
+      required: true
+    },
     id: {
       type: Number,
       required: true
@@ -107,28 +110,6 @@ export default {
 
 <style>
 
-.c-chart__container {
-  width: 100%;
-  height: 100%;
-  min-height: 300px;
-}
-
-.c-chart__linechart2 .c-line {
-  fill: none;
-  stroke: #019fde;
-  stroke-width: 3;
-}
-
-.c-chart__linechart2 .c-dot {
-  fill: #019fde;
-  stroke: #fff;
-}
-
-.c-chart__line {
-    fill: none;
-    stroke: #ffab00;
-    stroke-width: 3;
-}
 
 .c-chart__dots--1 {
     fill: #ffab00;

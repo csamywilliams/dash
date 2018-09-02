@@ -1,14 +1,13 @@
 <template>
-  <div id="app">
+  <div id="app" class="c-dashboard">
     <LineChart :id="lineChart1.id" :chartData="lineChart1" />
     <PieChart :id="pieData1.id" :chartData="pieData1" />
     <!-- <LineChart :chartData="lineChart2" />  -->
-    <BarChart :chartData="barData1" />
+    <BarChart :id="barData1.id" :chartData="barData1" />
   </div>
 </template>
 
 <script>
-
 
 import LineChart from './charts/LineChart.vue';
 import PieChart from './charts/PieChart.vue';
@@ -39,7 +38,7 @@ const lineChart1 = {
     curve: true,
     gridlines: false,
     radius: 5,
-    fill: true
+    fill: false
   }
 }
 
@@ -70,7 +69,9 @@ const pieData1 = {
   data: [
     { type: "Session complete", sessions: 50 },
     { type: "Session abandoned", sessions: 20 },
-    { type: "Session return", sessions: 30 }
+    { type: "Session return", sessions: 30 },
+    { type: "Test session", sessions: 20 },
+    { type: "System fail", sessions: 5 }
   ],
   axis: {
     key: "type",

@@ -51,7 +51,7 @@ export default {
         d3.select(scaleG)
             .attr("transform", `translate(0, ${this.h})`)
             .call(d3.axisBottom(xScale)
-            .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
+                    .tickFormat(d3.timeFormat(Consts.DATE_DMY)));
 
     },
 

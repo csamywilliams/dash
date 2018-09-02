@@ -51,8 +51,6 @@ export default {
             const w = this.width / 2;
             const h = this.height + this.margin.bottom - 10;
 
-            // const translate = new Transform().translate((this.width / 2), (this.height + this.margin.bottom + 20));
-        
             d3.select(`.c-chart__axistext-${this.axis}--${this.chart.id}`)
                 .attr("transform", `translate(${w}, ${h})`)
                 .style("text-anchor", "middle")

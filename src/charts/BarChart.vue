@@ -14,7 +14,14 @@ import * as d3 from "d3";
 export default {
     name: 'BarChart',
     props: {
-        chartData: Object
+        chartData: {
+          type: Object,
+          required: true
+        },
+        id: {
+          type: Number,
+          required: true
+        }
     },
     data: function() {
         return {

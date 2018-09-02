@@ -13,7 +13,9 @@ export default {
   props: {
     chartData: Object,
     w: Number,
-    h: Number
+    h: Number,
+    xScale: Function,
+    yScale: Function,
   },
   data: function() {
     return {

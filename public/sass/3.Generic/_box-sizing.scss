@@ -1,0 +1,16 @@
+html {
+
+    box-sizing: border-box;
+
+}
+
+/* Apply box sizing to everything
+   ========================================================================== */
+
+*,
+*::before,
+*::after {
+
+    box-sizing: inherit;
+
+}

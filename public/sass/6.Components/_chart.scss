@@ -1,0 +1,46 @@
+.c-chart {
+
+    &__container {
+        width: 100%;
+        height: 100%;
+        min-height: 300px;
+    }
+
+    &__line {
+        fill: none;
+        stroke-width: 3;
+
+        &--1 {
+            stroke: $sea-green;
+        }
+
+        &--2 {
+            stroke: $light-blue;
+        }
+    }
+
+    &__slice {
+
+        &--0 {
+            fill: $pie-slice-0;
+        }
+
+        &--1 {
+            fill: $pie-slice-1;
+        }
+
+        &--2 {
+            fill: $pie-slice-2;
+        }
+
+        &--3 {
+            fill: $pie-slice-3;
+        }
+
+        &--4 {
+            fill: $pie-slice-4;
+        }
+
+    }
+
+}
