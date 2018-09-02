@@ -1,8 +1,9 @@
 <template>
     <div :class="computedClass">
-    <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
-      <g :class="computedGClass" :transform="computeTransform"></g>
-    </svg> 
+        <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
+            <g :class="computedGClass" :transform="computeTransform"></g>
+            <ChartLegend :chart="chartData" :width="computeWidth" :height="computeHeight" />
+        </svg> 
   </div>
 </template>
 
@@ -10,10 +11,13 @@
 
 import * as d3 from "d3";
 import Consts from "../constants/Consts";
-import Legend from "../drawing/Legend";
+import ChartLegend from "../components/ChartLegend";
 
 export default {
     name: 'PieChart',
+    components: {
+        ChartLegend
+    },
     props: {
         chartData: {
           type: Object,
@@ -70,70 +74,73 @@ export default {
 
         createChart: function() {
 
-          const cls = `c-chart__arc c-chart__arc--${this.id} c-chart__slice c-chart__slice`;
-          
-          const pieAmount = this.chart.axis.amount;
+            const cls = `c-chart__arc c-chart__arc--${this.id} c-chart__slice c-chart__slice`;
+            
+            const pieAmount = this.chart.axis.amount;
 
-          const pie = d3.pie()
-                          .sort(null)
-                          .value(function (d) { 
-                              return d[pieAmount]
-                          });
+            const pie = d3.pie()
+                            .sort(null)
+                            .value(function (d) { 
+                                return d[pieAmount]
+                            });
 
-          this.g = d3.select(`.c-chart__g--${this.id}`)
-              .selectAll(`.${cls}`)
-              .data(pie(this.chart.data))
-              .enter().append(Consts.G)
-              .attr(Consts.CLASS, function(d) { 
-                return `${cls}--${d.index}`;
-              }); 
+            this.g = d3.select(`.c-chart__g--${this.id}`)
+                .selectAll(`.${cls}`)
+                .data(pie(this.chart.data))
+                .enter().append(Consts.G)
+                .attr(Consts.CLASS, function(d) { 
+                    return `${cls}--${d.index}`;
+                }); 
 
-          this.createPath();
-          this.createText();
+            this.createPath();
+            this.createText();
         
-    },
+        },
 
-    createPath() {
-   
-        const arc = d3.arc()
-              .outerRadius(this.radius() - 10)
-              .innerRadius(0);
+        createPath() {
+    
+            const arc = d3.arc()
+                .outerRadius(this.radius() - 10)
+                .innerRadius(0);
 
-  
-        const cls = `c-chart__arc-path--${this.id}`;
+    
+            const cls = `c-chart__arc-path--${this.id}`;
 
-        this.g.append(Consts.PATH)
-          .attr(Consts.D, arc)
-          .attr(Consts.CLASS, function(d) { 
-              return `c-chart__arc-path ${cls} c-chart__pie-path c-chart__pie-path--${d.index}`;
-          })
-          .transition()
-          .delay(function(d, i) { return i * 500; })
-          .duration(500)
-          .attrTween('d', function(d) {
-                var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
-                return function(t) {
-                  d.endAngle = i(t);
-                  return arc(d);
-                };
-            });
-    },
-    createText() {
-
-        const labelArc = d3.arc()
-                        .outerRadius(this.radius() - 30)
-                        .innerRadius(this.radius() - 175);
-                        
-        const cls = `c-chart__arc-text--${this.id}`;
-
-        this.g.append(Consts.TEXT)
-            .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-            .attr("dy", ".35em")
+            this.g.append(Consts.PATH)
+            .attr(Consts.D, arc)
             .attr(Consts.CLASS, function(d) { 
-                return `c-chart__arc-text ${cls} ${cls}--${d.index}`;
+                return `c-chart__arc-path ${cls} c-chart__pie-path c-chart__pie-path--${d.index}`;
             })
-            .text(function(d) { return d.data.type; });
-      }
+            .transition()
+            .delay(function(d, i) { return i * 500; })
+            .duration(500)
+            .attrTween('d', function(d) {
+                    var i = d3.interpolate(d.startAngle + 0.1, d.endAngle);
+                    return function(t) {
+                    d.endAngle = i(t);
+                    return arc(d);
+                    };
+                });
+        },
+        createText() {
+
+            const labelArc = d3.arc()
+                            .outerRadius(this.radius() - 30)
+                            .innerRadius(this.radius() - 175);
+                            
+            const cls = `c-chart__arc-text--${this.id}`;
+
+            this.g.append(Consts.TEXT)
+                .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
+                .attr("dy", ".35em")
+                .attr(Consts.CLASS, function(d) { 
+                    return `c-chart__arc-text ${cls} ${cls}--${d.index}`;
+                })
+                .text(function(d) { return d.data.type; });
+        },
+        createLegend() {
+
+        }
     },
     mounted() {
       this.createChart();
