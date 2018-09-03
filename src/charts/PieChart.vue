@@ -1,8 +1,8 @@
 <template>
     <div :class="computedClass">
         <svg :class="computedSVGClass" :width="computeWidth" :height="computeHeight" preserveAspectRatio="xMinYMin meet" :viewBox="computeViewBox">
-            <g :class="computedGClass" :transform="computeTransform"></g>
-            <ChartLegend :chart="chartData" :width="computeWidth" :height="computeHeight" />
+            <g :class="computedGClass" :transform="computeTransform" />
+            <g :class="computedLegendClass" :transform="computeLegendTransform"  />
         </svg> 
   </div>
 </template>
@@ -41,8 +41,15 @@ export default {
             },
             g: {},
             radius: function() {
-              return Math.min(this.w, this.h) / 2;
+              return Math.min(this.w, this.h) / 3;
             },
+            pie: function(key) {
+                return d3.pie()
+                        .sort(null)
+                        .value(function (d) { 
+                            return d[key]
+                        });
+            }
         }
     },
     computed: {
@@ -54,6 +61,13 @@ export default {
         },
         computedGClass() {
             return `c-chart__g c-chart__g--${this.id}`;
+        },
+        computedLegendClass() {
+            return `c-chart__legend c-chart__legend--${this.id}`;
+        },
+        computeLegendTransform() {
+            const height = 0 - this.margin.top;
+            return `translate(0, ${height}px)`;
         },
         computeViewBox() {
             return `0 0 ${this.w} ${this.h}`;
@@ -78,11 +92,7 @@ export default {
             
             const pieAmount = this.chart.axis.amount;
 
-            const pie = d3.pie()
-                            .sort(null)
-                            .value(function (d) { 
-                                return d[pieAmount]
-                            });
+            const pie = this.pie(pieAmount);
 
             this.g = d3.select(`.c-chart__g--${this.id}`)
                 .selectAll(`.${cls}`)
@@ -93,7 +103,7 @@ export default {
                 }); 
 
             this.createPath();
-            this.createText();
+            this.createLegend();
         
         },
 
@@ -122,24 +132,36 @@ export default {
                     };
                 });
         },
-        createText() {
-
-            const labelArc = d3.arc()
-                            .outerRadius(this.radius() - 30)
-                            .innerRadius(this.radius() - 175);
-                            
-            const cls = `c-chart__arc-text--${this.id}`;
-
-            this.g.append(Consts.TEXT)
-                .attr("transform", function(d) { return "translate(" + labelArc.centroid(d) + ")"; })
-                .attr("dy", ".35em")
-                .attr(Consts.CLASS, function(d) { 
-                    return `c-chart__arc-text ${cls} ${cls}--${d.index}`;
-                })
-                .text(function(d) { return d.data.type; });
-        },
         createLegend() {
 
+            const cls = `c-chart__legend--${this.id}`;
+            const arcCls = `c-chart__legend-rect-${this.id}`;
+            const legendText = `c-chart__legend-text c-chart__legend-text--${this.id}`;
+            const pieAmount = this.chart.axis.amount;
+            const pieKey = this.chart.axis.key;
+            const pie = this.pie(pieAmount);
+
+            let legend = d3.select(`.${cls}`).selectAll(`.${cls}`)
+                    .data(pie(this.chart.data))
+                    .enter().append(Consts.G)
+                    .attr("transform", function(d,i){
+                        return "translate(" + 0 + "," + (i * 15 + 20) + ")"; 
+                    });
+
+            legend.append(Consts.RECT) 
+                        .attr(Consts.WIDTH, 10)
+                        .attr(Consts.HEIGHT, 10)
+                        .attr(Consts.CLASS,function(d) {
+                            return `${arcCls} ${arcCls}__rect--${d.index}`;
+                    });
+
+            legend.append(Consts.TEXT) 
+                    .text(function(d) {
+                        return d.data[pieKey];
+                    })
+                    .attr(Consts.CLASS, legendText)
+                    .attr(Consts.Y, 10)
+                    .attr(Consts.X, 11);
         }
     },
     mounted() {
@@ -147,29 +169,3 @@ export default {
     }
 }
 </script>
-
-<style>
-
-
-.c-chart__arc-text {
-    fill: black;
-    font: 12px sans-serif;
-    text-anchor: middle;
-}
-
-.c-pie__path {
-  stroke: #fff;
-}
-
-.legend {
-     background-color: #F1F3F3;
-     padding: 5px;
-}
-
-.legend-text {
-    font-size: 12px;
-}
-
-
-
-</style>

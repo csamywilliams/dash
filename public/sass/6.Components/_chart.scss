@@ -19,6 +19,15 @@
         }
     }
 
+    &__legend {
+        background-color: #F1F3F3;
+        padding: 5px;
+    }
+
+    &__legend-text {
+        font-size: 1rem;
+    }
+
     &__slice {
 
         &--0 {
@@ -41,6 +50,32 @@
             fill: $pie-slice-4;
         }
 
+    }
+
+    &__legend-rect-2 {
+
+        &__rect {
+
+            &--0 {
+                fill: $pie-slice-0;
+            }
+
+            &--1 {
+                fill: $pie-slice-1;
+            }
+
+            &--2 {
+                fill: $pie-slice-2;
+            }
+
+            &--3 {
+                fill: $pie-slice-3;
+            }
+
+            &--4 {
+                fill: $pie-slice-4;
+            }
+        }
     }
 
 }

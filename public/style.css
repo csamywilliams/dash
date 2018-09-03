@@ -410,6 +410,11 @@ html {
     stroke: #52c79e; }
   .c-chart__line--2 {
     stroke: #66b1cc; }
+.c-chart__legend {
+  background-color: #F1F3F3;
+  padding: 5px; }
+.c-chart__legend-text {
+  font-size: 1rem; }
 .c-chart__slice--0 {
   fill: #52c79e; }
 .c-chart__slice--1 {
@@ -419,6 +424,16 @@ html {
 .c-chart__slice--3 {
   fill: #e5c071; }
 .c-chart__slice--4 {
+  fill: #c96e95; }
+.c-chart__legend-rect-2__rect--0 {
+  fill: #52c79e; }
+.c-chart__legend-rect-2__rect--1 {
+  fill: #e58c71; }
+.c-chart__legend-rect-2__rect--2 {
+  fill: #786ec9; }
+.c-chart__legend-rect-2__rect--3 {
+  fill: #e5c071; }
+.c-chart__legend-rect-2__rect--4 {
   fill: #c96e95; }
 
 .c-dashboard {
